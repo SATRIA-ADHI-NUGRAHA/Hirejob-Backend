@@ -57,8 +57,8 @@ module.exports = {
       } else {
         const id = req.params.id
         const body = req.body
-        body.image = !req.file ? '' : req.file.filename
-        if(!body.image) {
+        body.image_port = !req.file ? null : req.file.filename
+        if(body.image_port !== null) {
           portfolioModel.updateOne(body, id)
             .then(result => {
               success(res, result, 'update data success')
