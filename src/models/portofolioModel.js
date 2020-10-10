@@ -33,5 +33,16 @@ module.exports = {
         }
       })
     })
+  },
+  updateOne: (data, id) => {
+    return new Promise((resolve, reject) => {
+      db.query(`UPDATE portfolio SET ? WHERE id_portfolio = ?`, [data, id], (err, res) => {
+        if(err) {
+          reject(new Error(err))
+        } else {
+          resolve(res)
+        }
+      })
+    })
   }
 }

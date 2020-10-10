@@ -6,5 +6,6 @@ router
   .get('/findall', portfolioCont.findAll)
   .get('/findone/:id', portfolioCont.findOne)
   .post('/insertone', portfolioCont.insertOne)
+  .patch('/updateone/:id', portfolioCont.updateOne)
 
 module.exports = router
