@@ -4,6 +4,7 @@ const sendMail = require('../helpers/Mail')
 const jwt = require("jsonwebtoken");
 const { success, failed, loginSuccess } = require('../helpers/response')
 const env = require('../helpers/env')
+const upload = require('../helpers/upload')
 
 const user = {
     register: async (req, res) => {
@@ -77,6 +78,158 @@ const user = {
                 })
             }
         })
+    },
+    updateUser: (req, res) => {
+        const body = req.body
+        upload.single('image')(req, res, (err) => {
+            if (err) {
+                if (err.code === `LIMIT_FIELD_VALUE`) {
+                    failed(res, [], `Image size is to big`)
+                } else {
+                    failed(res, [], err)
+                }
+            } else {
+                const id = req.params.id
+                userModel.getOne(id)
+                    .then((response) => {
+                        const imageOld = response[0].image
+                        body.image = !req.file ? imageOld : req.file.filename
+                        if (body.image !== imageOld) {
+                            if (imageOld !== '404P.png') {
+                                fs.unlink(`src/img/${imageOld}`, (err) => {
+                                    if (err) {
+                                        failed(res, [], err.message)
+                                    } else {
+                                        userModel.updateUser(body, id)
+                                            .then((result) => {
+                                                success(res, result, 'Update success')
+                                            })
+                                            .catch((err) => {
+                                                failed(res, [], err.message)
+                                            })
+                                    }
+                                })
+                            } else {
+                                userModel.updateUser(body, id)
+                                    .then((result) => {
+                                        success(res, result, 'Update success')
+                                    })
+                                    .catch((err) => {
+                                        failed(res, [], err.message)
+                                    })
+                            }
+                        } else {
+                            userModel.updateUser(body, id)
+                                .then((result) => {
+                                    success(res, result, 'Update success')
+                                })
+                                .catch((err) => {
+                                    failed(res, [], err.message)
+                                })
+                        }
+                    })
+            }
+        })
+    },
+    getUser: (req, res) => {
+        const id = req.params.id
+        userModel.getOne(id)
+            .then((result) => {
+                success(res, result, 'success get user')
+            }).catch((err) => {
+                failed(res, [], err.message)
+            })
+    },
+    deleteUser: (req, res) => {
+        const id = req.params.id
+        userModel.getOne(id)
+            .then((result) => {
+                const img = result[0].image
+                if (img === '404P.png') {
+                    userModel.deleteUser(id)
+                        .then((result) => {
+                            success(res, result, 'success delete user')
+                        }).catch((err) => {
+                            failed(res, [], err.message)
+                        })
+                } else {
+                    fs.unlink(`src/img/${img}`, (err) => {
+                        if (err) {
+                            failed(res, [], err.message)
+                        } else {
+                            userModel.deleteUser(id)
+                                .then((result) => {
+                                    success(res, result, 'success delete user')
+                                }).catch((err) => {
+                                    failed(res, [], err.message)
+                                })
+                        }
+                    })
+                }
+            })
+    },
+    resetPass: (req, res) => {
+        const email = req.body.email
+        userModel.searchEmail(email)
+            .then((result) => {
+                if (!result[0]) {
+                    failed(res, [], 'Email invalid')
+                } else {
+                    const key = Math.floor(Math.random(111999777) * Math.floor(222999777))
+                    userModel.updateKey(key, email)
+                        .then((result) => {
+                            success(res, result, 'Check your email to reset password')
+                            const output = `
+                <h4>Reset Password</h4>
+                <p>You can confirm your email by clicking the link below <br> <a href="http://localhost:8080/reset-pwd?key=${key}">Reset Password</a></hp></center>
+                `
+                            let transporter = nodemailer.createTransport({
+                                host: 'smtp.gmail.com',
+                                port: 587,
+                                secure: false,
+                                requireTLS: true,
+                                auth: {
+                                    user: env.USEREMAIL,
+                                    pass: env.USERPASS
+                                }
+                            });
+
+                            let Mail = {
+                                from: '"Job Hire" <maxmukiper.com>',
+                                to: req.body.email,
+                                subject: "Reset Password",
+                                text: "Plaintext version of the message",
+                                html: output
+                            };
+                            transporter.sendMail(Mail)
+                        }).catch((err) => {
+                            failed(res, [], err.message)
+                        })
+                }
+            }).catch((err) => {
+                failed(res, [], err.message)
+            })
+    },
+    confirmPass: async (req, res) => {
+        const data = req.body
+        const key = req.body.key
+        if (data.password !== data.confirmpwd) {
+            failed(res, [], "Your password and confirmation password do not match")
+        } else {
+            if (!key) {
+                failed(res, [], "Key not found")
+            } else {
+                const pass = data.password
+                const salt = await bcrypt.genSalt(10)
+                const generate = await bcrypt.hash(pass, salt)
+                userModel.setPass(generate, key)
+                    .then((result) => {
+                        success(res, result, 'success reset password')
+                    }).catch((err) => {
+                        failed(res, [], err.message)
+                    })
+            }
+        }
     }
 }
 

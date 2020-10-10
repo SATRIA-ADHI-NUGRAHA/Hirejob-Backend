@@ -45,6 +45,72 @@ const user = {
             })
         })
     },
+    getOne: (id) => {
+        return new Promise((resolve, reject) => {
+            db.query(`SELECT * FROM users WHERE id_user=${id}`, (err, result) => {
+                if (err) {
+                    reject(new Error(err))
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    },
+    updateUser: (data, id) => {
+        return new Promise((resolve, reject) => {
+            db.query(`UPDATE users SET ? WHERE id_user = ${id}`, [data, id], (err, result) => {
+                if (err) {
+                    reject(new Error(err))
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    },
+    deleteUser: (id) => {
+        return new Promise((resolve, reject) => {
+            db.query(`DELETE FROM users WHERE id_user=${id}`, (err, result) => {
+                if (err) {
+                    reject(new Error(err))
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    },
+    searchEmail: (email) => {
+        return new Promise((resolve, reject) => {
+            db.query(`SELECT * FROM users WHERE email="${email}"`, (err, result) => {
+                if (err) {
+                    reject(new Error(err))
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    },
+    updateKey: (key, email) => {
+        return new Promise((resolve, reject) => {
+            db.query(`UPDATE users SET pass_key="${key}" WHERE email="${email}"`, (err, result) => {
+                if(err) {
+                    reject(new Error(err))
+                }else {
+                    resolve(result)
+                }
+            })
+        })
+    },
+    setPass: (password, key) => {
+        return new Promise((resolve, reject) => {
+            db.query(`UPDATE users SET password='${password}', pass_key=null WHERE key_pass='${key}'`, (err, result) => {
+                if(err) {
+                    reject(new Error(err))
+                }else{
+                    resolve(result)
+                }
+            })
+        })
+    }
 }
 
 module.exports = user
