@@ -11,6 +11,7 @@ const env = require('./src/helpers/env')
 const db = require('./src/config/config')
 const user = require('./src/routers/user')
 const company = require('./src/routers/company')
+const portfolio = require('./src/routers/portfolio')
 
 db.connect((err) => {
     if(err) throw err
@@ -26,6 +27,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use('/v1/user', user)
 app.use('/v1/company',company)
+app.use('/v1/portfolio', portfolio)
 
 server.listen(env.PORT, () => {
     console.log(`Server running at port ${env.PORT}`);
