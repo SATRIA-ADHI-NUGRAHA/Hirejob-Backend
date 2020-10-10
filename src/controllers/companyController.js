@@ -27,8 +27,8 @@ const companyController = {
         })
     },
     getDetail: (req, res) => {
-        const id = req.params.id
-        companyModels.getDetail(id)
+        const id_company = req.params.id_company
+        companyModels.getDetail(id_company)
         .then((result) => {
             success(res, result, 'Get Detail company success')
         })
@@ -59,9 +59,10 @@ const companyController = {
       })
     },
     update: (req, res) => {
-        const id = req.params.id
+        const id_company = req.params.id_company
         const body = req.body
-        companyModels.update(body, id)
+        body.image_com = !req.file ? '': req.file.filename
+        companyModels.update(body, id_company)
         .then((result) => {
             success(res, result, 'Update company success')
         })
@@ -70,8 +71,8 @@ const companyController = {
         })
     },
     destroy: (req, res) => {
-        const id =  req.params.id
-        companyModels.destroy(id)
+        const id_company =  req.params.id_company
+        companyModels.destroy(id_company)
         .then((result) => {
             success(res, result, 'Delete company success')
         })

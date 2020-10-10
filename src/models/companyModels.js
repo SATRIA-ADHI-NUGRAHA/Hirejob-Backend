@@ -7,7 +7,7 @@ const company = {
       db.query(
         `SELECT *, (SELECT COUNT(*) FROM company) AS count, 
             company.id_company as id_company FROM company
-            WHERE nama_produk LIKE '%${namaProduk}%' ORDER BY ${sort} ${type} LIMIT ${offset}, ${limit} `,
+            WHERE name_com LIKE '%${namaProduk}%' ORDER BY ${sort} ${type} LIMIT ${offset}, ${limit} `,
         (err, result) => {
           if (err) {
             reject(new Error(err));
@@ -18,7 +18,7 @@ const company = {
       );
     });
   },
-  getDetail: (id) => {
+  getDetail: (id_company) => {
     return new Promise((resolve, reject) => {
       db.query(`SELECT * FROM company WHERE id_company= '${id_company}'`, (err, result) => {
         if (err) {
@@ -46,15 +46,15 @@ const company = {
       );
     });
   },
-  update: (data, id) => {
+  update: (data, id_company) => {
         return new Promise((resolve, reject) => {
-            if(!data.gambar) {
+            if(!data.image_com) {
                 db.query(`SELECT * FROM company WHERE id_company=${id_company}`, (err, result) => {
                     if(err) {
                         reject(new Error(err));
                     }else {
                         resolve(new Promise((resolve, reject) => {
-                            data.gambar = result[0].gambar;
+                            data.image_com = result[0].image_com;
                             db.query(`UPDATE company SET ? WHERE id_company = ?`, [data, id_company], (err, res) => {
                                 if(err) {
                                     reject(new Error(err));
@@ -67,17 +67,17 @@ const company = {
                 })
 
             }else {
-                db.query(`SELECT * FROM company WHERE id=${id}`, (err, result) => {
+                db.query(`SELECT * FROM company WHERE id_company=${id_company}`, (err, result) => {
                     if(err) {
                         reject(new Error(err));
                     }else {
                         resolve(new Promise((resolve, reject) => {
                             let imagename = null
-                            if(!data.gambar){
-                                imagename = result[0].gambar;
+                            if(!data.image_com){
+                                imagename = result[0].image_com;
                             }else{
-                                imagename = data.gambar;
-                                fs.unlink(`src/img/${result[0].gambar}`, (err) => {
+                                imagename = data.image_com;
+                                fs.unlink(`src/img/${result[0].image_com}`, (err) => {
                                     if(err) throw err;
                                     console.log('Update data success');
                                 })
@@ -95,9 +95,9 @@ const company = {
             }
         })
   },
-  destroy: (id) => {
+  destroy: (id_company) => {
     return new Promise((resolve, reject) => {
-      db.query(`DELETE FROM company WHERE id='${id}'`, (err, result) => {
+      db.query(`DELETE FROM company WHERE id_company='${id_company}'`, (err, result) => {
         if (err) {
           reject(new Error(err.message));
         } else {
