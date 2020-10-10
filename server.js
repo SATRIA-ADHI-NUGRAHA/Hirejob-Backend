@@ -8,6 +8,7 @@ const server = http.createServer(app)
 // const io = require(server)
 const env = require('./src/helpers/env')
 const db = require('./src/config/config')
+const company = require('')
 
 db.connect((err) => {
     if(err) throw err
