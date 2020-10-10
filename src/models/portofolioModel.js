@@ -25,7 +25,7 @@ module.exports = {
   },
   isertOne: (data) => {
     return new Promise((resolve, reject) => {
-      db.query(`ISERT INTO porfolio SET ?`, data, (err, res) => {
+      db.query(`INSERT INTO portfolio SET ?`, data, (err, res) => {
         if(err) {
           reject(new Error(err))
         } else {

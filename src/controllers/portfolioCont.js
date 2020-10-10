@@ -35,7 +35,7 @@ module.exports = {
           name_app: body.name_app,
           id_user: body.id_user,
           type_portfolio: body.type_portfolio,
-          image: body.image,
+          image_port: body.image,
           repository_link: body.repository_link
         }).then(result => {
           success(res, result, 'insert portfolio success')

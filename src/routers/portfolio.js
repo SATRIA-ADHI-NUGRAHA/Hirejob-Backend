@@ -6,3 +6,5 @@ router
   .get('/findall', portfolioCont.findAll)
   .get('/findone/:id', portfolioCont.findOne)
   .post('/insertone', portfolioCont.insertOne)
+
+module.exports = router
