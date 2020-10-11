@@ -10,10 +10,11 @@ const user = {
     register: async (req, res) => {
         const data = req.body
         const password = req.body.password
+        const level = req.body.level
         const salt = await bcrypt.genSalt(10)
         const generate = await bcrypt.hash(password, salt)
         const img = "404P.png"
-        userModel.register(data, generate, img)
+        userModel.register(data, generate, img, level)
             .then(async (result) => {
                 const email = data.email
                 success(res, [], 'Please check your email to activation')
