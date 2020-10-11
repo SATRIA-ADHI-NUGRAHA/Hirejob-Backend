@@ -47,7 +47,8 @@ module.exports = {
     })
   },
   updateOne: (req, res) => {
-    upload.single('image')(req, res, (err) => {
+    const body = req.bod
+    upload.single('image_port')(req, res, (err) => {
       if(err){
         if(err.code === 'LIMIT_FILE_SIZE'){
           failed(res, [], 'File size max 1000 KB')
