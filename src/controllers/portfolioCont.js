@@ -24,9 +24,9 @@ module.exports = {
           portfolioModel.findOne(id)
             .then(result => {
               const dat = result[0]
-              if(!dat){
+              if (!dat) {
                 failed(res, [], "Please add portofolio")
-              }else{
+              } else {
                 success(res, result, 'get data portfolio success')
               }
             }).catch(err => {
@@ -36,7 +36,7 @@ module.exports = {
       })
   },
   insertOne: (req, res) => {
-    upload.single('image')(req, res, (err) => {
+    upload.single('image_port')(req, res, (err) => {
       if (err) {
         if (err.code === 'LIMIT_FILE_SIZE') {
           failed(res, [], 'File size max 1000 KB')
