@@ -47,7 +47,7 @@ const user = {
     },
     getOne: (id) => {
         return new Promise((resolve, reject) => {
-            db.query(`SELECT * FROM users INNER JOIN experience on users.id_user = experience.id_users JOIN company on experience.id_company = company.id_company WHERE id_user=${id}`, (err, result) => {
+            db.query(`SELECT * FROM users WHERE id_user=${id}`, (err, result) => {
                 if (err) {
                     reject(new Error(err))
                 } else {

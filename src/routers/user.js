@@ -13,6 +13,5 @@ route
 .post('/reset-pass', resetPass)
 .post('/reset-confirm', confirmPass)
 .get('/',getAll )
-.get('/role', userGetRole)
 
 module.exports = route

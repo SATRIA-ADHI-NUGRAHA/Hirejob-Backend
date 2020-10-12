@@ -252,9 +252,6 @@ const user = {
             }).catch((err) => {
                 console.log(err);
             })
-    },
-    userGetRole: (req, res) => {
-        console.log('sukses role');
     }
 }
 
