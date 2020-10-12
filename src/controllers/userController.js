@@ -22,11 +22,7 @@ const user = {
                 const token = await jwt.sign({ email: data.email }, env.SECRETKEY)
                 sendMail(email, token)
             }).catch((err) => {
-                if (err.message = 'Duplicate entry') {
-                    failed(res, [], 'User Already Exist')
-                } else {
-                    failed(res, [], err.message)
-                }
+                failed(res, [], err.message)
             })
     },
     login: (req, res) => {

@@ -3,7 +3,7 @@ const db = require('../config/config')
 const user = {
     register: (data, generate, image, level) => {
         return new Promise((resolve, reject) => {
-            db.query(`INSERT INTO users (name_user, email, password, image, role) VALUES('${data.name}', '${data.email}', '${generate}', '${level}', '${image}')`, (err, result) => {
+            db.query(`INSERT INTO users (name_user, email, password,no_hp, image, role) VALUES('${data.name}', '${data.email}', '${generate}','${data.handphone}', '${level}', '${image}')`, (err, result) => {
                 if (err) {
                     reject(err)
                 } else {
