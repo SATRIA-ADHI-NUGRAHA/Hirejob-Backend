@@ -3,7 +3,7 @@ const db = require('../config/config')
 const user = {
     register: (data, generate, image, level) => {
         return new Promise((resolve, reject) => {
-            db.query(`INSERT INTO users (name_user, email, password, image, role) VALUES('${data.name}', '${data.email}', '${generate}', '${level}', '${image}')`, (err, result) => {
+            db.query(`INSERT INTO users (name_user, email, password,no_hp, image, role) VALUES('${data.name}', '${data.email}', '${generate}','${data.handphone}', '${level}', '${image}')`, (err, result) => {
                 if (err) {
                     reject(err)
                 } else {
@@ -113,7 +113,7 @@ const user = {
     },
     getAll: (name, sort, typesort, limit, offset) => {
         return new Promise((resolve, reject) => {
-            db.query(`SELECT *, (SELECT COUNT(*) FROM users) as count FROM users WHERE role=0`, (err, result) => {
+            db.query(`SELECT *, (SELECT COUNT(*) FROM users) as count FROM users WHERE skill LIKE '%${name}%' AND role=0 ORDER BY ${sort} ${typesort} LIMIT ${limit} OFFSET ${offset}`, (err, result) => {
                 if(err) {
                     reject(new Error(err))
                 }else{

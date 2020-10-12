@@ -22,9 +22,9 @@ const user = {
                 const token = await jwt.sign({ email: data.email }, env.SECRETKEY)
                 sendMail(email, token)
             }).catch((err) => {
-                if (err.message = 'Duplicate entry') {
-                    failed(res, [], 'User Already Exist')
-                } else {
+                if(err.message = 'Duplicate entry'){
+                    failed(res, [], "User Already exist")
+                }else {
                     failed(res, [], err.message)
                 }
             })
@@ -49,15 +49,16 @@ const user = {
                             const id = result[0].id_user
                             const token_user = result[0].refress
                             const role = result[0].role
+                            const mail = result[0].email
                             const token = jwt.sign({ id: id }, env.SECRETKEY, { expiresIn: 3600 })
                             const refresh = jwt.sign({ id: id }, env.SECRETKEY)
                             if (!token_user) {
                                 userModel.loginToken(refresh, id)
                                     .then((result) => {
-                                        loginSuccess(res, id, role, token, refresh, 'success login')
+                                        loginSuccess(res, id, role, mail,token, refresh, 'success login')
                                     })
                             } else {
-                                loginSuccess(res, id, role ,token, token_user, 'success login')
+                                loginSuccess(res, id, role, mail ,token, token_user, 'success login')
                             }
                         }
                     }
@@ -235,12 +236,12 @@ const user = {
         }
     },
     getAll: (req, res) => {
-        const name = !req.query.name ? "" : req.query.name;
+        const name = !req.query.search ? "" : req.query.search;
         const sort = !req.query.sortBy ? "id_user" : req.query.sortBy;
         const typesort = !req.query.type ? "ASC" : req.query.type;
         const limit = !req.query.limit ? 10 : parseInt(req.query.limit);
         const page = !req.query.page ? 1 : parseInt(req.query.page);
-        const offset = page <= 1 ? 0 : (page - 1) * limit;
+        const offset = page === 1 ? 0 : (page - 1) * limit;
         userModel.getAll(name, sort, typesort, limit, offset)
             .then((result) => {
                 const totalRows = result[0].count;
