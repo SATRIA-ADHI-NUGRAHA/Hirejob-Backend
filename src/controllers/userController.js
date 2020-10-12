@@ -48,15 +48,16 @@ const user = {
                         } else {
                             const id = result[0].id_user
                             const token_user = result[0].refress
+                            const role = result[0].role
                             const token = jwt.sign({ id: id }, env.SECRETKEY, { expiresIn: 3600 })
                             const refresh = jwt.sign({ id: id }, env.SECRETKEY)
                             if (!token_user) {
                                 userModel.loginToken(refresh, id)
                                     .then((result) => {
-                                        loginSuccess(res, id, token, refresh, 'success login')
+                                        loginSuccess(res, id, role, token, refresh, 'success login')
                                     })
                             } else {
-                                loginSuccess(res, id, token, token_user, 'success login')
+                                loginSuccess(res, id, role ,token, token_user, 'success login')
                             }
                         }
                     }

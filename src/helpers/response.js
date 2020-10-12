@@ -39,13 +39,14 @@ const response = {
     }
     res.status(400).json(error)
   },
-  loginSuccess: (res, id, token, refreshToken, message) => {
+  loginSuccess: (res, id, role, token, refreshToken, message) => {
     const result = {
       code: 200,
       status: true,
       message: message,
       data: {
         id,
+        role,
         token,
         refreshToken
       }
