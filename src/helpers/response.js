@@ -17,7 +17,7 @@ const response = {
       message,
       data
     }
-    res.status(500).json(failed)
+    res.json(failed)
   },
   successWithMeta: (res, data, meta, message) => {
     const result = {
