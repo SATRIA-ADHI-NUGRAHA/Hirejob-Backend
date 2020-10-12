@@ -2,19 +2,20 @@ const bcrypt = require('bcrypt')
 const userModel = require('../models/userModel')
 const sendMail = require('../helpers/Mail')
 const jwt = require("jsonwebtoken");
-const { success, failed, loginSuccess } = require('../helpers/response')
+const { success, failed, loginSuccess, successWithMeta } = require('../helpers/response')
 const env = require('../helpers/env')
 const upload = require('../helpers/upload')
+const fs = require('fs')
 
 const user = {
     register: async (req, res) => {
         const data = req.body
         const password = req.body.password
-        const level = req.body.level
+        const role = req.body.role
         const salt = await bcrypt.genSalt(10)
         const generate = await bcrypt.hash(password, salt)
         const img = "404P.png"
-        userModel.register(data, generate, img, level)
+        userModel.register(data, generate, role, img)
             .then(async (result) => {
                 const email = data.email
                 success(res, [], 'Please check your email to activation')
@@ -231,6 +232,29 @@ const user = {
                     })
             }
         }
+    },
+    getAll: (req, res) => {
+        const name = !req.query.name ? "" : req.query.name;
+        const sort = !req.query.sortBy ? "id_user" : req.query.sortBy;
+        const typesort = !req.query.type ? "ASC" : req.query.type;
+        const limit = !req.query.limit ? 10 : parseInt(req.query.limit);
+        const page = !req.query.page ? 1 : parseInt(req.query.page);
+        const offset = page <= 1 ? 0 : (page - 1) * limit;
+        userModel.getAll(name, sort, typesort, limit, offset)
+            .then((result) => {
+                const totalRows = result[0].count;
+                const meta = {
+                    total: totalRows,
+                    totalPage: Math.ceil(totalRows / limit),
+                    page: page,
+                }
+                successWithMeta(res, result, meta, 'Get all company success')
+            }).catch((err) => {
+                console.log(err);
+            })
+    },
+    userGetRole: (req, res) => {
+        console.log('sukses role');
     }
 }
 

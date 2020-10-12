@@ -1,6 +1,6 @@
 const express = require('express')
 const route = express.Router()
-const { register, login, verify, updateUser, getUser, deleteUser, resetPass, confirmPass } = require('../controllers/userController')
+const { register, login, verify, updateUser, getUser, deleteUser, resetPass, confirmPass, getAll, userGetRole } = require('../controllers/userController')
 const upload = require('../helpers/upload')
 
 route
@@ -12,5 +12,7 @@ route
 .delete('/delete/:id', deleteUser)
 .post('/reset-pass', resetPass)
 .post('/reset-confirm', confirmPass)
+.get('/',getAll )
+.get('/role', userGetRole)
 
 module.exports = route

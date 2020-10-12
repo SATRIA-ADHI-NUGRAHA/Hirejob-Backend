@@ -3,7 +3,7 @@ const db = require('../config/config')
 const user = {
     register: (data, generate, image, level) => {
         return new Promise((resolve, reject) => {
-            db.query(`INSERT INTO users (name_user, email, password, image, roles) VALUES('${data.name}', '${data.email}', '${generate}', '${image}', '${level}')`, (err, result) => {
+            db.query(`INSERT INTO users (name_user, email, password, image, role) VALUES('${data.name}', '${data.email}', '${generate}', '${level}', '${image}')`, (err, result) => {
                 if (err) {
                     reject(err)
                 } else {
@@ -47,7 +47,7 @@ const user = {
     },
     getOne: (id) => {
         return new Promise((resolve, reject) => {
-            db.query(`SELECT * FROM users WHERE id_user=${id}`, (err, result) => {
+            db.query(`SELECT * FROM users INNER JOIN experience on users.id_user = experience.id_users JOIN company on experience.id_company = company.id_company WHERE id_user=${id}`, (err, result) => {
                 if (err) {
                     reject(new Error(err))
                 } else {
@@ -104,6 +104,28 @@ const user = {
         return new Promise((resolve, reject) => {
             db.query(`UPDATE users SET password='${password}', pass_key=null WHERE key_pass='${key}'`, (err, result) => {
                 if(err) {
+                    reject(new Error(err))
+                }else{
+                    resolve(result)
+                }
+            })
+        })
+    },
+    getAll: (name, sort, typesort, limit, offset) => {
+        return new Promise((resolve, reject) => {
+            db.query(`SELECT *, (SELECT COUNT(*) FROM users) as count FROM users WHERE role=0`, (err, result) => {
+                if(err) {
+                    reject(new Error(err))
+                }else{
+                    resolve(result)
+                }
+            })
+        })
+    },
+    userGet: () => {
+        return new Promise((resolve, reject) => {
+            db.query(`SELECT * FROM users`, (err, result) => {
+                if(err){
                     reject(new Error(err))
                 }else{
                     resolve(result)
