@@ -236,12 +236,12 @@ const user = {
         }
     },
     getAll: (req, res) => {
-        const name = !req.query.name ? "" : req.query.name;
+        const name = !req.query.search ? "" : req.query.search;
         const sort = !req.query.sortBy ? "id_user" : req.query.sortBy;
         const typesort = !req.query.type ? "ASC" : req.query.type;
         const limit = !req.query.limit ? 10 : parseInt(req.query.limit);
         const page = !req.query.page ? 1 : parseInt(req.query.page);
-        const offset = page <= 1 ? 0 : (page - 1) * limit;
+        const offset = page === 1 ? 0 : (page - 1) * limit;
         userModel.getAll(name, sort, typesort, limit, offset)
             .then((result) => {
                 const totalRows = result[0].count;
