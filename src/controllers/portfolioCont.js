@@ -99,5 +99,15 @@ module.exports = {
         }
       }
     })
+  },
+  destroy: (req, res) => {
+      const id =  req.params.id
+      portfolioModel.destroy(id)
+      .then((result) => {
+          success(res, result, 'Delete portfolio success')
+      })
+      .catch((err) => {
+          failed(res, [], err.message)
+      })
   }
 }

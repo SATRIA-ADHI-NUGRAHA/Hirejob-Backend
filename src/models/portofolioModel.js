@@ -56,4 +56,15 @@ module.exports = {
       })
     })
   },
+  destroy: (id) => {
+    return new Promise((resolve, reject) => {
+      db.query(`DELETE FROM portfolio WHERE id_portfolio='${id}'`, (err, result) => {
+        if (err) {
+          reject(new Error(err.message));
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  }
 }

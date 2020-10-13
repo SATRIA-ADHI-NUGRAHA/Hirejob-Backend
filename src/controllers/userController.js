@@ -244,13 +244,13 @@ const user = {
         const offset = page === 1 ? 0 : (page - 1) * limit;
         userModel.getAll(name, sort, typesort, limit, offset)
             .then((result) => {
-                const totalRows = result[0]
+                const totalRows = result[0].count
                 const meta = {
                     total: totalRows,
                     totalPage: Math.ceil(totalRows / limit),
                     page: page,
                 }
-                successWithMeta(res, result, meta, 'Get all company success')
+                successWithMeta(res, result, meta, 'Get all user success')
             }).catch((err) => {
                 console.log(err);
             })
