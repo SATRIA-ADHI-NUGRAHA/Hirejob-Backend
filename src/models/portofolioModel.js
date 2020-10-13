@@ -44,5 +44,16 @@ module.exports = {
         }
       })
     })
-  }
+  },
+  getOne: (id) => {
+    return new Promise((resolve, reject) => {
+      db.query(`SELECT * FROM portfolio WHERE id_portfolio=${id}`, (err, res) => {
+        if(err) {
+          reject(new Error(err))
+        } else {
+          resolve(res)
+        }
+      })
+    })
+  },
 }
