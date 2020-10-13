@@ -52,7 +52,8 @@ const experience = {
                 if(err){
                     reject(new Error(err.message))
                 }else{
-                    resolve(result)
+                    // resolve(result)
+                    console.log(result)
                 }
             })
         })

@@ -78,6 +78,7 @@ const category = {
         const body = req.body
         expModel.update(body, id)
             .then((result) => {
+                // console.log(result)
                 success(res, result, 'Update Experience Success')
             })
             .catch((err) => {

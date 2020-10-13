@@ -9,5 +9,6 @@ router
   .get('/findone/:id', authenticate, authorize, portfolioCont.findOne)
   .post('/insertone', authenticate, authorize, portfolioCont.insertOne)
   .patch('/updateone/:id', authenticate, authorize, upload.single('image_port'), portfolioCont.updateOne)
+  .delete('/delete/:id', authenticate, authorize, portfolioCont.destroy)
 
 module.exports = router
