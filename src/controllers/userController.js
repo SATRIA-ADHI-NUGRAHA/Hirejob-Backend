@@ -236,7 +236,7 @@ const user = {
         }
     },
     getAll: (req, res) => {
-        const name = !req.query.search ? "" : req.query.search;
+        const name = !req.query.search ? "..." : req.query.search;
         const sort = !req.query.sortBy ? "id_user" : req.query.sortBy;
         const typesort = !req.query.type ? "ASC" : req.query.type;
         const limit = !req.query.limit ? 10 : parseInt(req.query.limit);
@@ -244,8 +244,13 @@ const user = {
         const offset = page === 1 ? 0 : (page - 1) * limit;
         userModel.getAll(name, sort, typesort, limit, offset)
             .then((result) => {
-                console.log(result)
-                // successWithMeta(res, result, meta, 'Get all company success')
+                const totalRows = result[0].count
+                const meta = {
+                    total: totalRows,
+                    totalPage: Math.ceil(totalRows / limit),
+                    page: page,
+                }
+                successWithMeta(res, result, meta, 'Get all user success')
             }).catch((err) => {
                 console.log(err);
             })
