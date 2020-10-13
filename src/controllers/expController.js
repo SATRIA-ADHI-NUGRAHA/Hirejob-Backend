@@ -78,7 +78,6 @@ const category = {
         const body = req.body
         expModel.update(body, id)
             .then((result) => {
-                redisClient.del('category')
                 success(res, result, 'Update Experience Success')
             })
             .catch((err) => {
