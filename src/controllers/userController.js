@@ -237,7 +237,7 @@ const user = {
         }
     },
     getAll: (req, res) => {
-        const name = !req.query.search ? "..." : req.query.search;
+        const name = !req.query.search ? "" : req.query.search;
         const sort = !req.query.sortBy ? "id_user" : req.query.sortBy;
         const typesort = !req.query.type ? "ASC" : req.query.type;
         const limit = !req.query.limit ? 10 : parseInt(req.query.limit);
