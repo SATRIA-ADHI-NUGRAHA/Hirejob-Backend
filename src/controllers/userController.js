@@ -6,6 +6,7 @@ const { success, failed, loginSuccess, successWithMeta } = require('../helpers/r
 const env = require('../helpers/env')
 const upload = require('../helpers/upload')
 const fs = require('fs')
+const nodemailer = require('nodemailer')
 
 const user = {
     register: async (req, res) => {
@@ -193,14 +194,14 @@ const user = {
                                 secure: false,
                                 requireTLS: true,
                                 auth: {
-                                    user: env.USEREMAIL,
-                                    pass: env.USERPASS
+                                    user: env.USERMAIL,
+                                    pass: env.PASSMAIL
                                 }
                             });
 
                             let Mail = {
                                 from: '"Job Hire" <maxmukiper.com>',
-                                to: req.body.email,
+                                to: email,
                                 subject: "Reset Password",
                                 text: "Plaintext version of the message",
                                 html: output

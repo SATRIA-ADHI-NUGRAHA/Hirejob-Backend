@@ -113,9 +113,7 @@ const user = {
     },
     getAll: (name, sort, typesort, limit, offset) => {
         return new Promise((resolve, reject) => {
-            db.query(`SELECT *
-            FROM users WHERE skill LIKE '%${name}%' 
-            AND role=0 ORDER BY ${sort} ${typesort} LIMIT ${limit}`, (err, result) => {
+            db.query(`SELECT *, ( SELECT COUNT(*) FROM users) AS count FROM users WHERE skill LIKE '%${name}%' AND role=0 ORDER BY ${sort} ${typesort} LIMIT ${offset}, ${limit}`, (err, result) => {
                 if(err) {
                     reject(new Error(err))
                 }else{
