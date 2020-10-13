@@ -13,6 +13,6 @@ route
 .delete('/delete/:id',authenticate, authorize, deleteUser)
 .post('/reset-pass', resetPass)
 .post('/reset-confirm', confirmPass)
-.get('/',authenticate, authorize, getAll )
+.get('/', authenticate, authorize, getAll )
 
 module.exports = route

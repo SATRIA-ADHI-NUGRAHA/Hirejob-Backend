@@ -1,7 +1,7 @@
 const db = require('../config/config')
 
 const experience = {
-    getAll: (position, sort, type) => {
+    getAll: (position) => {
         return new Promise ((resolve, reject) => {
             db.query(`SELECT *, (SELECT COUNT(*) FROM experience) AS count, 
             experience.id_experience as id_experience FROM experience 
@@ -45,6 +45,18 @@ const experience = {
             })
         })
     },
+    getId: (id) => {
+        return new Promise ((resolve, reject) => {
+            db.query(`SELECT * FROM experience WHERE id_experience = ${id}`, 
+            (err, result) => {
+                if(err){
+                    reject(new Error(err.message))
+                }else{
+                    resolve(result)
+                }
+            })
+        })
+    },
     update: (data, id) => {
         return new Promise ((resolve, reject) => {
             db.query(`UPDATE experience SET ? WHERE id_experience = ?`, [data, id], 
@@ -52,8 +64,7 @@ const experience = {
                 if(err){
                     reject(new Error(err.message))
                 }else{
-                    // resolve(result)
-                    console.log(result)
+                    resolve(result)
                 }
             })
         })
