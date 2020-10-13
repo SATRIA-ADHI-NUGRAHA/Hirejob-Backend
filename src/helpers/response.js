@@ -61,7 +61,7 @@ const response = {
       code: 405,
       data
     }
-    res.status(405).json(result)
+    res.json(result)
   },
   tokenErr: (res, data, message) => {
     const result = {
@@ -70,7 +70,7 @@ const response = {
       code: 505,
       data
     }
-    res.status(505).json(result)
+    res.json(result)
   },
   tokenStatus: (res, data, message) => {
     const result = {
