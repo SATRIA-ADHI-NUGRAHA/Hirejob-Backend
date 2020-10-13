@@ -61,7 +61,6 @@ module.exports = {
     })
   },
   updateOne: (req, res) => {
-    const body = req.bod
     upload.single('image_port')(req, res, (err) => {
       if (err) {
         if (err.code === 'LIMIT_FILE_SIZE') {
@@ -81,7 +80,7 @@ module.exports = {
               failed(res, [], err.message)
             })
         } else {
-          portfolioModel.findOne(id)
+          portfolioModel.getOne(id)
             .then(result => {
               const oldImage = result[0].image_port
               fs.unlink(`src/img/${oldImage}`, (err) => {
