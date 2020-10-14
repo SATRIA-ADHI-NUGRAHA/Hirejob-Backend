@@ -6,6 +6,6 @@ const portfolioCont = require('../controllers/Chat')
 router
   .post('/addfriends', authenticate, authorize, portfolioCont.addFriends)
   .get('/friends/:id', authenticate, authorize, portfolioCont.getFriends)
-  .post('/addChat', addChat)
+  .post('/addChat', portfolioCont.addChat)
 
 module.exports = router

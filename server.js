@@ -6,7 +6,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const server = http.createServer(app)
 const path = require('path')
-// const io = require(server)
+const io = socketIo(server)
 const env = require('./src/helpers/env')
 const db = require('./src/config/config')
 const user = require('./src/routers/user')
@@ -26,6 +26,9 @@ app.use(cors())
 app.use(express.static('src/img'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+io.on('connection', (socket) => {
+    console.log('user online');
+})
 
 app.use('/v1/user', user)
 app.use('/v1/company',company)

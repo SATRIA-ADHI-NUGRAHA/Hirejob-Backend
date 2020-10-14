@@ -186,7 +186,7 @@ const user = {
                             success(res, result, 'Check your email to reset password')
                             const output = `
                 <h4>Reset Password</h4>
-                <p>You can confirm your email by clicking the link below <br> <a href="http://localhost:8080/reset-pwd?key=${key}">Reset Password</a></hp></center>
+                <p>You can confirm your email by clicking the link below <br> <a href="http://localhost:8080/forgot?key=${key}">Reset Password</a></hp></center>
                 `
                             let transporter = nodemailer.createTransport({
                                 host: 'smtp.gmail.com',
