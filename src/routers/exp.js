@@ -5,11 +5,11 @@ const router = express.Router()
 
 router
 .get('/getall', authenticate, authorize, expControllers.getAll)
-.get('/detail/:id_experience', authenticate, authorize, expControllers.getDetail)
+.get('/detail/:id', authenticate, authorize, expControllers.getDetail)
 .post('/insert', authenticate, authorize, expControllers.insert)
 .get('/getexperience/:id', authenticate, authorize, expControllers.getExp)
-.put('/update/:id_exprerience',authenticate, authorize, expControllers.update)
-.patch('/update/:id_exprerience', authenticate, authorize, expControllers.update)
-.delete('/delete/:id_exprerience', authenticate, authorize, expControllers.destroy)
+.put('/update/:id',authenticate, authorize, expControllers.update)
+.patch('/update/:id', authenticate, authorize, expControllers.update)
+.delete('/delete/:id', authenticate, authorize, expControllers.destroy)
 
 module.exports = router

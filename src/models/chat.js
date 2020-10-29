@@ -79,7 +79,7 @@ module.exports = {
     },
     insertChat: (data) => {
         return new Promise((resolve, reject) => {
-            db.query(`INSERT INTO message (sender, receiver, message) VALUES ('${data.sender}', '${data.receiver}', '${data.message}')`, (err, result) => {
+            db.query(`INSERT INTO message (type_chat, sender, receiver, message) VALUES ('${data.type_chat}','${data.sender}', '${data.receiver}', '${data.message}')`, (err, result) => {
                 if(err) {
                     reject(new Error(err))
                 }else{

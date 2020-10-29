@@ -14,6 +14,8 @@ const company = require('./src/routers/company')
 const portfolio = require('./src/routers/portfolio')
 const experience = require('./src/routers/exp')
 const chat = require('./src/routers/chat')
+const chatModel = require('./src/models/chat')
+const { success, failed } = require('./src/helpers/response')
 
 db.connect((err) => {
     if(err) throw err
@@ -27,6 +29,57 @@ app.use(express.static('src/img'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 io.on('connection', (socket) => {
+socket.on('send-message-hire', (payload) => {
+chatModel.insertChat(payload)
+        .then(result => {
+            io.emit('res-hire', result)
+        }).catch(err => {
+           console.log(err);
+        })
+})
+socket.on('get-friends', (payload) => {
+         //console.log(payload);
+        chatModel.getFriends(payload.id)
+            .then((result) => {
+//console.log(result)
+                io.emit('userList', result)
+            })
+    })
+socket.on('get-message', (payload) => {
+        chatModel.getMessage(payload)
+            .then((result) => {
+                io.to(payload.sender).emit('list-message', result)
+                // io.emit('chatting', (result))
+            }).catch((err) => {
+                console.log(err);
+            })
+    })
+
+socket.on('send-message', (payload) => {
+chatModel.insertChat(payload)
+//chatModel.getMessage(payload)
+        .then(result => {
+            io.to(payload.receiver).emit('list-message', payload)
+        }).catch(err => {
+           console.log(err);
+        })
+})
+
+socket.on('get-history-message', (payload) => {
+        chatModel.getMessage(payload)
+            .then((result) => {
+                io.to(payload.sender).emit('history-message', result)
+io.to(payload.receiver).emit('history-message', result)
+
+                // io.emit('chatting', (result))
+            }).catch((err) => {
+                console.log(err);
+            })
+    })
+
+socket.on('join-room', (payload) => {
+        socket.join(payload)
+    })
     console.log('user online');
 })
 

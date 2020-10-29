@@ -8,7 +8,7 @@ route
 .post('/register', register)
 .post('/login', login)
 .get('/verification/:token', verify)
-.patch('/edit/:id', authenticate, authorize, upload.single('image'), updateUser)    
+.patch('/edit/:id', authenticate, authorize, updateUser)    
 .get('/:id',authenticate, authorize, getUser)
 .delete('/delete/:id',authenticate, authorize, deleteUser)
 .post('/reset-pass', resetPass)
